@@ -13,6 +13,33 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "Sprint",
+                    "type": "Button",
+                    "id": "19fb84dd-5741-43d6-b199-659c73705aa5",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Sheath",
+                    "type": "Button",
+                    "id": "68a02090-51dd-4fd5-ba3c-1b277c6343a9",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Attack",
+                    "type": "Button",
+                    "id": "7a74e182-19b7-408f-8976-7e5fff2d7181",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -70,6 +97,39 @@
                     "action": "Movement",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "6553c7ac-7cea-47f3-9e49-47768a3febcb",
+                    "path": "<Keyboard>/leftShift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Sprint",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "74d6e185-a9f1-4dc7-9684-76dc71c98a1e",
+                    "path": "<Keyboard>/e",
+                    "interactions": "Tap",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Sheath",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1ea7a297-86d3-4fc2-a8d4-d153d7abd109",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "Tap",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Attack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }

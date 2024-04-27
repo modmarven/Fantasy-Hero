@@ -6,16 +6,22 @@ public class CharacterMovementManager : MonoBehaviour
 {
     private InputController inputActions;
     private CharacterController character;
-    private Animator animator;
+    public Animator animator;
 
     [Header("Movement Setting")]
     public float currentSpeed = 3.0f;
     public float turnSmoothTime = 0.1f;
+    public float walkSpeed = 3.0f;
+    public float runSpeed = 5.0f;
+
     public Transform mainCameraTransform;
     [Space]
     [Header("Jump Setting")]
 
-
+    [Space]
+    [Header("Boolians")]
+    public bool isWalk;
+    public bool isRun;
 
     private float turnSmoothVelocity;
 
@@ -30,6 +36,7 @@ public class CharacterMovementManager : MonoBehaviour
     void Update()
     {
         HandlingCharacterMovement();
+        HandlingSprint();
     }
 
     private void HandlingCharacterMovement()
@@ -53,8 +60,28 @@ public class CharacterMovementManager : MonoBehaviour
             animator.SetFloat("speed", direction.magnitude);
 
         }
-        else animator.SetFloat("speed", 0f);
+        else animator.SetFloat("speed", 0f);      
+        
+    }
 
+    private void HandlingSprint()
+    {
+        // get movement input
+        Vector2 inputVector = inputActions.Player.Movement.ReadValue<Vector2>();
+
+        // Set sprint bool
+        if (inputActions.Player.Sprint.triggered) isRun = !isRun;
+        if (!isRun) isWalk = true;
+        else isWalk = false;
+
+        if (inputVector == Vector2.zero) isRun = false;
+
+        // Handle the speed
+        if (isRun) currentSpeed = runSpeed;
+        else if (isWalk) currentSpeed = walkSpeed;
+
+        if (isRun) animator.SetBool("isRun", true);
+        else animator.SetBool("isRun", false);
     }
 
     private void OnEnable()

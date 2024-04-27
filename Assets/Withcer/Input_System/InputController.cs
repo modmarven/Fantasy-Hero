@@ -35,6 +35,33 @@ public partial class @InputController: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Sprint"",
+                    ""type"": ""Button"",
+                    ""id"": ""19fb84dd-5741-43d6-b199-659c73705aa5"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Sheath"",
+                    ""type"": ""Button"",
+                    ""id"": ""68a02090-51dd-4fd5-ba3c-1b277c6343a9"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Attack"",
+                    ""type"": ""Button"",
+                    ""id"": ""7a74e182-19b7-408f-8976-7e5fff2d7181"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press"",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -92,6 +119,39 @@ public partial class @InputController: IInputActionCollection2, IDisposable
                     ""action"": ""Movement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6553c7ac-7cea-47f3-9e49-47768a3febcb"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Sprint"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""74d6e185-a9f1-4dc7-9684-76dc71c98a1e"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": ""Tap"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Sheath"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1ea7a297-86d3-4fc2-a8d4-d153d7abd109"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": ""Tap"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -101,6 +161,9 @@ public partial class @InputController: IInputActionCollection2, IDisposable
         // Player
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Movement = m_Player.FindAction("Movement", throwIfNotFound: true);
+        m_Player_Sprint = m_Player.FindAction("Sprint", throwIfNotFound: true);
+        m_Player_Sheath = m_Player.FindAction("Sheath", throwIfNotFound: true);
+        m_Player_Attack = m_Player.FindAction("Attack", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -163,11 +226,17 @@ public partial class @InputController: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Player;
     private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
     private readonly InputAction m_Player_Movement;
+    private readonly InputAction m_Player_Sprint;
+    private readonly InputAction m_Player_Sheath;
+    private readonly InputAction m_Player_Attack;
     public struct PlayerActions
     {
         private @InputController m_Wrapper;
         public PlayerActions(@InputController wrapper) { m_Wrapper = wrapper; }
         public InputAction @Movement => m_Wrapper.m_Player_Movement;
+        public InputAction @Sprint => m_Wrapper.m_Player_Sprint;
+        public InputAction @Sheath => m_Wrapper.m_Player_Sheath;
+        public InputAction @Attack => m_Wrapper.m_Player_Attack;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -180,6 +249,15 @@ public partial class @InputController: IInputActionCollection2, IDisposable
             @Movement.started += instance.OnMovement;
             @Movement.performed += instance.OnMovement;
             @Movement.canceled += instance.OnMovement;
+            @Sprint.started += instance.OnSprint;
+            @Sprint.performed += instance.OnSprint;
+            @Sprint.canceled += instance.OnSprint;
+            @Sheath.started += instance.OnSheath;
+            @Sheath.performed += instance.OnSheath;
+            @Sheath.canceled += instance.OnSheath;
+            @Attack.started += instance.OnAttack;
+            @Attack.performed += instance.OnAttack;
+            @Attack.canceled += instance.OnAttack;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -187,6 +265,15 @@ public partial class @InputController: IInputActionCollection2, IDisposable
             @Movement.started -= instance.OnMovement;
             @Movement.performed -= instance.OnMovement;
             @Movement.canceled -= instance.OnMovement;
+            @Sprint.started -= instance.OnSprint;
+            @Sprint.performed -= instance.OnSprint;
+            @Sprint.canceled -= instance.OnSprint;
+            @Sheath.started -= instance.OnSheath;
+            @Sheath.performed -= instance.OnSheath;
+            @Sheath.canceled -= instance.OnSheath;
+            @Attack.started -= instance.OnAttack;
+            @Attack.performed -= instance.OnAttack;
+            @Attack.canceled -= instance.OnAttack;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -207,5 +294,8 @@ public partial class @InputController: IInputActionCollection2, IDisposable
     public interface IPlayerActions
     {
         void OnMovement(InputAction.CallbackContext context);
+        void OnSprint(InputAction.CallbackContext context);
+        void OnSheath(InputAction.CallbackContext context);
+        void OnAttack(InputAction.CallbackContext context);
     }
 }
