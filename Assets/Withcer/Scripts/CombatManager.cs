@@ -45,7 +45,6 @@ public class CombatManager : MonoBehaviour
         character.animator.SetTrigger("sheathWeapon");
         drawWeapon = false;
     }
-
     private void OnEnable()
     {
         inputActions.Enable();

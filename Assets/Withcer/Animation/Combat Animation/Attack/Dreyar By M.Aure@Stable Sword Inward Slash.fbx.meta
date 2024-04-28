@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: e14249cd92f7d48429213090e239f59c
+guid: 9874165183d71614c9091f72cd68c958
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
@@ -33,11 +33,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Draw A Great Sword 2
+      name: Combat 1
       takeName: mixamo.com
       internalID: -203655887218126122
       firstFrame: 0
-      lastFrame: 24
+      lastFrame: 35
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -51,19 +51,12 @@ ModelImporter:
       loopBlendPositionXZ: 1
       keepOriginalOrientation: 1
       keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
+      keepOriginalPositionXZ: 1
       heightFromFeet: 0
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events:
-      - time: 0
-        functionName: WeaponDraw
-        data: 
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
+      events: []
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}

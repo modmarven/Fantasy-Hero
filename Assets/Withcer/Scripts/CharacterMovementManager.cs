@@ -7,6 +7,7 @@ public class CharacterMovementManager : MonoBehaviour
     private InputController inputActions;
     private CharacterController character;
     public Animator animator;
+    private Rigidbody rigidBody;
 
     [Header("Movement Setting")]
     public float currentSpeed = 3.0f;
@@ -15,8 +16,13 @@ public class CharacterMovementManager : MonoBehaviour
     public float runSpeed = 5.0f;
 
     public Transform mainCameraTransform;
+
     [Space]
     [Header("Jump Setting")]
+    public float gravity = 9.81f;
+    public float groundCheckDistance = 0.5f;
+    public LayerMask groundMask;
+    public bool isGrounded;
 
     [Space]
     [Header("Boolians")]
@@ -30,6 +36,7 @@ public class CharacterMovementManager : MonoBehaviour
         inputActions = new InputController();
         character = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
+        rigidBody = GetComponent<Rigidbody>();
     }
 
 
@@ -37,6 +44,9 @@ public class CharacterMovementManager : MonoBehaviour
     {
         HandlingCharacterMovement();
         HandlingSprint();
+
+        // Ground Check
+        isGrounded = Physics.Raycast(transform.position, -Vector3.up, groundCheckDistance, groundMask);
     }
 
     private void HandlingCharacterMovement()
@@ -60,8 +70,10 @@ public class CharacterMovementManager : MonoBehaviour
             animator.SetFloat("speed", direction.magnitude);
 
         }
-        else animator.SetFloat("speed", 0f);      
-        
+        else animator.SetFloat("speed", 0f);
+
+        // Apply Gravity
+        if (!isGrounded) character.Move(Vector3.down * gravity);    
     }
 
     private void HandlingSprint()
