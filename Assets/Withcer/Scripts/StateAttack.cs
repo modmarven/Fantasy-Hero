@@ -27,18 +27,29 @@ public class StateAttack : MonoBehaviour
     {
         countAttackClick++;
         if (countAttackClick == 1) animator.SetInteger("attack", 1);
+        if (countAttackClick >= 16) ResetAttackPhase();
     }
 
     public void CheckAttackPhase()
     {
-        if (animator.GetCurrentAnimatorStateInfo(1).IsName("Combat 1"))
+        if (animator.GetCurrentAnimatorStateInfo(1).IsName("Combat 4"))
         {
             if (countAttackClick > 1) animator.SetInteger("attack", 2);
             else ResetAttackPhase();
         }
         else if (animator.GetCurrentAnimatorStateInfo(1).IsName("Combat 2"))
         {
-            if (countAttackClick >= 2) ResetAttackPhase();
+            if (countAttackClick > 2) animator.SetInteger("attack", 3);
+            else ResetAttackPhase();
+        }
+        else if (animator.GetCurrentAnimatorStateInfo(1).IsName("Combat 3"))
+        {
+            if (countAttackClick > 3) animator.SetInteger("attack", 4);
+            else ResetAttackPhase();
+        }
+        else if (animator.GetCurrentAnimatorStateInfo(1).IsName("Combat 1"))
+        {
+            if (countAttackClick >= 4) ResetAttackPhase();
         }
     }
 
