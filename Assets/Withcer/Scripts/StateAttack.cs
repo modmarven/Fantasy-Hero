@@ -8,6 +8,8 @@ public class StateAttack : MonoBehaviour
     public int countAttackClick;
     private InputController inputActions;
 
+    public bool isAttack;
+
     void Awake()
     {
         inputActions = new InputController();
@@ -20,10 +22,11 @@ public class StateAttack : MonoBehaviour
         if (inputActions.Player.Attack.triggered)
         {
             ButtonAttack();
+            isAttack = true;
         }
     }
 
-    void ButtonAttack()
+    public void ButtonAttack()
     {
         countAttackClick++;
         if (countAttackClick == 1) animator.SetInteger("attack", 1);
@@ -57,6 +60,7 @@ public class StateAttack : MonoBehaviour
     {
         countAttackClick = 0;
         animator.SetInteger("attack", 0);
+        isAttack = false;
     }
 
     private void OnEnable()

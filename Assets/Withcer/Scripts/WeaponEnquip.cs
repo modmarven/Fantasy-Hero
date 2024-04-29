@@ -27,4 +27,14 @@ public class WeaponEnquip : MonoBehaviour
         currentWeaponInSheath = Instantiate(weapon, weaponSheath.transform);
         Destroy(currentWeaponInHand);
     }
+
+    public void StartDealDamage()
+    {
+        currentWeaponInHand.GetComponentInChildren<DamageDealer>().StartDamage();
+    }
+
+    public void EndDealDamage()
+    {
+        currentWeaponInHand.GetComponentInChildren<DamageDealer>().EndDamage();
+    }
 }
