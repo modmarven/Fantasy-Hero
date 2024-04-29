@@ -10,10 +10,14 @@ public class DamageDealer : MonoBehaviour
     public float weaponLenght;
     public float weaponDamage;
 
+    private SfxManager sfxManager;
+
     void Start()
     {
         canDamage = false;
         hasDamage = new List<GameObject>();
+
+        sfxManager= GameObject.Find("Sound Manager").GetComponent<SfxManager>();
     }
 
     
@@ -39,6 +43,7 @@ public class DamageDealer : MonoBehaviour
     {
         canDamage = true;
         hasDamage.Clear();
+        sfxManager.PlaySlashSound();
     }
 
     public void EndDamage()

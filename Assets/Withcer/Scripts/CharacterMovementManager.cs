@@ -39,6 +39,11 @@ public class CharacterMovementManager : MonoBehaviour
         rigidBody = GetComponent<Rigidbody>();
     }
 
+    private void Start()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+    }
+
 
     void Update()
     {
@@ -47,6 +52,13 @@ public class CharacterMovementManager : MonoBehaviour
 
         // Ground Check
         isGrounded = Physics.Raycast(transform.position, -Vector3.up, groundCheckDistance, groundMask);
+
+        //Cursor Unlock
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+           Cursor.lockState = CursorLockMode.None;
+        }
+        
     }
 
     private void HandlingCharacterMovement()
