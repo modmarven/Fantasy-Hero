@@ -7,7 +7,6 @@ public class CharacterMovementManager : MonoBehaviour
     private InputController inputActions;
     private CharacterController character;
     public Animator animator;
-    private Rigidbody rigidBody;
 
     [Header("Movement Setting")]
     public float currentSpeed = 3.0f;
@@ -22,21 +21,25 @@ public class CharacterMovementManager : MonoBehaviour
     public float gravity = 9.81f;
     public float groundCheckDistance = 0.5f;
     public LayerMask groundMask;
+    public Transform groundCheck;
     public bool isGrounded;
+    public float jumpHeight;
+    private Vector3 velocity = Vector3.zero;
 
     [Space]
     [Header("Boolians")]
     public bool isWalk;
     public bool isRun;
+    public bool isJump;
 
     private float turnSmoothVelocity;
+    public float raycastDistance;
 
     void Awake()
     {
         inputActions = new InputController();
         character = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
-        rigidBody = GetComponent<Rigidbody>();
     }
 
     private void Start()
@@ -49,16 +52,17 @@ public class CharacterMovementManager : MonoBehaviour
     {
         HandlingCharacterMovement();
         HandlingSprint();
+        HandlingJump();
 
         // Ground Check
-        isGrounded = Physics.Raycast(transform.position, -Vector3.up, groundCheckDistance, groundMask);
+        isGrounded = Physics.Raycast(groundCheck.position, Vector3.down, groundCheckDistance, groundMask);
 
         //Cursor Unlock
         if (Input.GetKeyDown(KeyCode.Escape))
         {
            Cursor.lockState = CursorLockMode.None;
         }
-        
+
     }
 
     private void HandlingCharacterMovement()
@@ -85,7 +89,7 @@ public class CharacterMovementManager : MonoBehaviour
         else animator.SetFloat("speed", 0f);
 
         // Apply Gravity
-        if (!isGrounded) character.Move(Vector3.down * gravity);    
+        if (!isGrounded) character.Move(Vector3.down * gravity * Time.deltaTime);    
     }
 
     private void HandlingSprint()
@@ -106,6 +110,45 @@ public class CharacterMovementManager : MonoBehaviour
 
         if (isRun) animator.SetBool("isRun", true);
         else animator.SetBool("isRun", false);
+    }
+
+    private void HandlingJump()
+    {
+        if (inputActions.Player.Jump.triggered && isGrounded)
+        {
+            velocity.y = Mathf.Sqrt(2f * jumpHeight * gravity);
+            isJump = true;
+        }
+        velocity.y -= gravity * Time.deltaTime;
+        character.Move(velocity * Time.deltaTime);
+        JumpAnimation();
+    }
+
+    private void JumpAnimation()
+    {
+        if (inputActions.Player.Jump.triggered && isJump == true)
+        {
+            animator.SetBool("isJump", true);
+        }
+        if (isGrounded == false)
+        {
+            animator.SetBool("isFall", true);
+            animator.SetBool("isJump", false);
+            isJump = false;
+        }
+
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, Vector3.down, out hit, raycastDistance, groundMask))
+        {
+            animator.SetBool("isLand", true);
+            animator.SetBool("isFall", false);
+        }
+        
+    }
+
+    public void GroundDetect()
+    {
+       animator.SetBool("isLand", false);
     }
 
     private void OnEnable()

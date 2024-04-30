@@ -10,19 +10,26 @@ public class StateAttack : MonoBehaviour
 
     public bool isAttack;
 
+    private CombatManager combatManager;
+
     void Awake()
     {
         inputActions = new InputController();
         animator = GetComponent<Animator>();
         countAttackClick = 0;
+
+        combatManager = GameObject.Find("Witcher").GetComponent<CombatManager>();
     }
 
     private void Update()
     {
         if (inputActions.Player.Attack.triggered)
         {
-            ButtonAttack();
-            isAttack = true;
+            if (combatManager.drawWeapon == true)
+            {
+                ButtonAttack();
+                isAttack = true;
+            }         
         }
     }
 
