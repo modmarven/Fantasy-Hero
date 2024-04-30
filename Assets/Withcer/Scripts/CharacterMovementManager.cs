@@ -24,7 +24,14 @@ public class CharacterMovementManager : MonoBehaviour
     public Transform groundCheck;
     public bool isGrounded;
     public float jumpHeight;
-    private Vector3 velocity = Vector3.zero;
+    public float jumpButtonGracePeriod;
+
+    private float ySpeed;
+    private Vector3 direction;
+    private float speed = 3f;
+    private float originalStepOffset;
+    private float? lastGroundTime;
+    private float? jumpButtonPressedTime;
 
     [Space]
     [Header("Boolians")]
@@ -33,7 +40,7 @@ public class CharacterMovementManager : MonoBehaviour
     public bool isJump;
 
     private float turnSmoothVelocity;
-    public float raycastDistance;
+    private float magnitude;
 
     void Awake()
     {
@@ -45,6 +52,7 @@ public class CharacterMovementManager : MonoBehaviour
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
+        originalStepOffset = character.stepOffset;
     }
 
 
@@ -70,7 +78,7 @@ public class CharacterMovementManager : MonoBehaviour
         Vector2 inputMovement = inputActions.Player.Movement.ReadValue<Vector2>().normalized;
         float horizontal = inputMovement.x;
         float verticle = inputMovement.y;
-        Vector3 direction = new Vector3(horizontal, 0f, verticle).normalized;
+        direction = new Vector3(horizontal, 0f, verticle).normalized;
 
         if (direction.magnitude >= 0.1f)
         {
@@ -89,7 +97,9 @@ public class CharacterMovementManager : MonoBehaviour
         else animator.SetFloat("speed", 0f);
 
         // Apply Gravity
-        if (!isGrounded) character.Move(Vector3.down * gravity * Time.deltaTime);    
+        /*if (!isGrounded) character.Move(Vector3.down * gravity * Time.deltaTime); */
+
+        ySpeed += Physics.gravity.y * Time.deltaTime;
     }
 
     private void HandlingSprint()
@@ -114,41 +124,36 @@ public class CharacterMovementManager : MonoBehaviour
 
     private void HandlingJump()
     {
-        if (inputActions.Player.Jump.triggered && isGrounded)
+        magnitude = Mathf.Clamp01(direction.magnitude) * speed * Time.deltaTime;
+
+        if (isGrounded)
         {
-            velocity.y = Mathf.Sqrt(2f * jumpHeight * gravity);
-            isJump = true;
+            lastGroundTime = Time.time;
         }
-        velocity.y -= gravity * Time.deltaTime;
+        if (inputActions.Player.Jump.IsPressed())
+        {
+            jumpButtonPressedTime = Time.time;
+        }
+        if (Time.time - lastGroundTime <= jumpButtonGracePeriod)
+        {
+            character.stepOffset = originalStepOffset;
+            ySpeed = -0.5f;
+
+            if (Time.time - jumpButtonPressedTime <= jumpButtonGracePeriod)
+            {
+                ySpeed = jumpHeight;
+                jumpButtonPressedTime = null;
+                lastGroundTime = null;
+            }
+        }
+        else
+        {
+            character.stepOffset = 0f;
+        }
+     
+        Vector3 velocity = direction * magnitude;
+        velocity.y = ySpeed;
         character.Move(velocity * Time.deltaTime);
-        JumpAnimation();
-    }
-
-    private void JumpAnimation()
-    {
-        if (inputActions.Player.Jump.triggered && isJump == true)
-        {
-            animator.SetBool("isJump", true);
-        }
-        if (isGrounded == false)
-        {
-            animator.SetBool("isFall", true);
-            animator.SetBool("isJump", false);
-            isJump = false;
-        }
-
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position, Vector3.down, out hit, raycastDistance, groundMask))
-        {
-            animator.SetBool("isLand", true);
-            animator.SetBool("isFall", false);
-        }
-        
-    }
-
-    public void GroundDetect()
-    {
-       animator.SetBool("isLand", false);
     }
 
     private void OnEnable()
