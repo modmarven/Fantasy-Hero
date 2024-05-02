@@ -19,10 +19,15 @@ public class CharacterMovementManager : MonoBehaviour
     [Space]
     [Header("Jump Setting")]
     public float gravity = 9.81f;
-    public float groundCheckDistance = 0.5f;
+    [SerializeField] private float raycastDistance = 0.1f;
+    [SerializeField] private float raycastOffset = 0.05f;
+    [SerializeField] private float maxSlopeAngle = 45f;
     public LayerMask groundMask;
     public Transform groundCheck;
+
     public bool isGrounded;
+    public bool isOnSlop;
+
     public float jumpHeight;
     public float jumpButtonGracePeriod;
 
@@ -38,9 +43,13 @@ public class CharacterMovementManager : MonoBehaviour
     public bool isWalk;
     public bool isRun;
     public bool isJump;
+    public bool isGround;
 
     private float turnSmoothVelocity;
     private float magnitude;
+
+    [SerializeField] private Transform footBone;
+    public float raycastDistanceBone;
 
     void Awake()
     {
@@ -63,7 +72,8 @@ public class CharacterMovementManager : MonoBehaviour
         HandlingJump();
 
         // Ground Check
-        isGrounded = Physics.Raycast(groundCheck.position, Vector3.down, groundCheckDistance, groundMask);
+        CheckGround();
+        CheckSlope();
 
         //Cursor Unlock
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -71,6 +81,57 @@ public class CharacterMovementManager : MonoBehaviour
            Cursor.lockState = CursorLockMode.None;
         }
 
+        CheckBone();
+
+    }
+
+    private void CheckGround()
+    {
+        isGrounded = false;
+
+        // Cast rays around the character's feet to check for ground
+        Vector3 raycastOrigin = transform.position;
+        RaycastHit hit;
+
+        if (Physics.Raycast(raycastOrigin + Vector3.up * raycastOffset, Vector3.down, out hit, raycastDistance, groundMask))
+        {
+            isGrounded = true;
+        }
+        else if (Physics.Raycast(raycastOrigin - Vector3.up * raycastOffset, Vector3.down, out hit, raycastDistance, groundMask))
+        {
+            isGrounded = true;
+        }
+    }
+
+    private void CheckSlope()
+    {
+        isOnSlop = false;
+
+        // Cast a ray to check for slope
+        RaycastHit hit;
+        Vector3 downDirection = transform.TransformDirection(Vector3.down);
+
+        if (Physics.Raycast(transform.position, downDirection, out hit, raycastDistance, groundMask))
+        {
+            // Calculate slope angle
+            float slopeAngle = Vector3.Angle(hit.normal, Vector3.up);
+            if (slopeAngle > maxSlopeAngle)
+            {
+                isOnSlop = true;
+            }
+        }
+    }
+
+    // Public method to check if the character is grounded
+    public bool IsGrounded()
+    {
+        return isGrounded;
+    }
+
+    // Public method to check if the character is on a slope
+    public bool IsOnSlope()
+    {
+        return isOnSlop;
     }
 
     private void HandlingCharacterMovement()
@@ -122,11 +183,29 @@ public class CharacterMovementManager : MonoBehaviour
         else animator.SetBool("isRun", false);
     }
 
+    // Foot bone check ground
+    private void CheckBone()
+    {
+        isGround = false;
+
+        // Cast a ray from the foot bone downwards to check for ground
+        RaycastHit hit;
+        if (Physics.Raycast(footBone.position, Vector3.down, out hit, raycastDistanceBone, groundMask))
+        {
+            isGround = true;
+        }
+    }
+
+    // Public method to check if the foot is grounded
+    public bool IsGround()
+    {
+        return isGround;
+    }
     private void HandlingJump()
     {
         magnitude = Mathf.Clamp01(direction.magnitude) * speed * Time.deltaTime;
 
-        if (isGrounded)
+        if (isGround)
         {
             lastGroundTime = Time.time;
         }
@@ -138,10 +217,14 @@ public class CharacterMovementManager : MonoBehaviour
         {
             character.stepOffset = originalStepOffset;
             ySpeed = -0.5f;
-
+            animator.SetBool("isGround", true);
+            animator.SetBool("isFall", false);
+            
             if (Time.time - jumpButtonPressedTime <= jumpButtonGracePeriod)
             {
                 ySpeed = jumpHeight;
+                animator.SetBool("isJump", true);
+                isJump = true;
                 jumpButtonPressedTime = null;
                 lastGroundTime = null;
             }
@@ -149,6 +232,13 @@ public class CharacterMovementManager : MonoBehaviour
         else
         {
             character.stepOffset = 0f;
+            animator.SetBool("isMove", false);
+
+            if ((isJump && ySpeed < 0) || ySpeed < -2)
+            {
+                animator.SetBool("isJump", false);
+                animator.SetBool("isFall", true);
+            }
         }
      
         Vector3 velocity = direction * magnitude;
