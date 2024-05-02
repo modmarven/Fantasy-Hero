@@ -1306,6 +1306,7 @@ GameObject:
   - component: {fileID: 918545394817291529}
   - component: {fileID: 918545394817291530}
   - component: {fileID: 918545394817291531}
+  - component: {fileID: 7500881580699877498}
   m_Layer: 0
   m_Name: Witcher
   m_TagString: Player
@@ -1329,6 +1330,7 @@ Transform:
   - {fileID: 1589535595214172141}
   - {fileID: 6761523181107799498}
   - {fileID: 7210088220921098640}
+  - {fileID: 6923464324746085619}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1415,7 +1417,7 @@ MonoBehaviour:
   groundCheck: {fileID: 7210088220921098640}
   isGrounded: 0
   isOnSlop: 0
-  jumpHeight: 8
+  jumpHeight: 10
   jumpButtonGracePeriod: 0.2
   isWalk: 0
   isRun: 0
@@ -1477,6 +1479,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   countAttackClick: 0
   isAttack: 0
+--- !u!114 &7500881580699877498
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5842479693725062595}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11d11d56b5e845142a730deb84960b9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cam: {fileID: 0}
+  projectTile: {fileID: 6778102890403379345, guid: 8a659cbb905390645b1759b7e56c036a,
+    type: 3}
+  firePoint: {fileID: 6923464324746085619}
+  fireRate: 4
 --- !u!1 &5967481844139800216
 GameObject:
   m_ObjectHideFlags: 0
@@ -1764,6 +1783,37 @@ Transform:
   - {fileID: 3735746366938483023}
   m_Father: {fileID: 7942773185403932825}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6957924601450974442
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6923464324746085619}
+  m_Layer: 0
+  m_Name: Slash Point
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6923464324746085619
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6957924601450974442}
+  m_LocalRotation: {x: -0, y: -0, z: -1.5957313e-17, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 25}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6512056622902808441}
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7130447967535019855
 GameObject:
