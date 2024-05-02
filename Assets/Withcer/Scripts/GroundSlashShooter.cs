@@ -23,11 +23,11 @@ public class GroundSlashShooter : MonoBehaviour
    
     void Update()
     {
-        if (inputActions.Player.Ground.IsPressed())
+        if (inputActions.Player.Ground.triggered)
         {
-            timeTofire = Time.time + 1 / fireRate;
             ShootProjecttile();
             animator.SetTrigger("Slash");
+            Debug.Log("Press");
         }
     }
 
