@@ -15,10 +15,24 @@ public class GroundSlashShooter : MonoBehaviour
     private InputController inputActions;
     private Animator animator;
 
+    // Sound Manager
+    public AudioSource audioSource;
+    public AudioClip audioClip;
+
     void Awake()
     {
         inputActions = new InputController();
         animator = GetComponent<Animator>();
+
+        // Create an AudioSource component if not already attached
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+        }
+
+        // Assign the audio clip
+        audioSource.clip = audioClip;
     }
    
     void Update()
@@ -44,6 +58,15 @@ public class GroundSlashShooter : MonoBehaviour
         groundSlashScript = projecttileObj.GetComponent<GroundSlash>();
         RotationToDestination(projecttileObj, destination, true);
         projecttileObj.GetComponent<Rigidbody>().velocity = transform.forward * groundSlashScript.speed;
+
+        if (audioClip != null && audioSource != null)
+        {
+            audioSource.Play();
+        }
+        else
+        {
+            Debug.LogWarning("Audio clip or AudioSource not assigned!");
+        }
     }
 
     private void RotationToDestination(GameObject obj, Vector3 destination, bool onlyY)

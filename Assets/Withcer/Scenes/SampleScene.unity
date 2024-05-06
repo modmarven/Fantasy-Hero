@@ -201,7 +201,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
-  m_LocalRotation: {x: 0.14190412, y: 0.000000017032264, z: -0.0000000024416564, w: 0.98988044}
+  m_LocalRotation: {x: 0.14190413, y: -0.000000017032262, z: 0.0000000024416567, w: 0.98988044}
   m_LocalPosition: {x: 10.673783, y: 2.9820952, z: -17.684967}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -258,7 +258,7 @@ MonoBehaviour:
   m_ShowCameraFrustum: 1
   m_IgnoreTimeScale: 0
   m_WorldUpOverride: {fileID: 0}
-  m_UpdateMethod: 2
+  m_UpdateMethod: 1
   m_BlendUpdateMethod: 1
   m_DefaultBlend:
     m_Style: 1
@@ -308,7 +308,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slashSound:
   - {fileID: 8300000, guid: 0f90dfbf0819a0841bfa5b237d753700, type: 3}
-  - {fileID: 8300000, guid: bed54db013e77594e864a943c212fdbe, type: 3}
+  - {fileID: 8300000, guid: 8eb1a445fc10c154980c72ba1fc5cf06, type: 3}
+  - {fileID: 8300000, guid: c2e3d86b650135d4d9185188775bda41, type: 3}
+  - {fileID: 8300000, guid: 8436124a627e7f242b3701a3f41261cd, type: 3}
   audioSource: {fileID: 362174289}
 --- !u!82 &362174289
 AudioSource:
@@ -1943,7 +1945,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1905749591}
-  m_LocalRotation: {x: 0.15988602, y: -0.000000016985028, z: 0.00000000275106, w: 0.98713547}
+  m_LocalRotation: {x: 0.15988602, y: 0.000000016985028, z: -0.00000000275106, w: 0.98713547}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2021,7 +2023,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2050274736}
-  m_LocalRotation: {x: 0.14190409, y: 0.00000001703226, z: -0.0000000024416564, w: 0.98988044}
+  m_LocalRotation: {x: 0.1419041, y: -0.000000017032256, z: 0.0000000024416562, w: 0.98988044}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
